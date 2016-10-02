@@ -39,7 +39,7 @@ app.post('/webhook/', function (req, res) {
     res.sendStatus(200)
 })
 
-const token = process.env.RUCZAJ_ACCESS_TOKEN;
+var token = 'xyz'; //process.env.RUCZAJ_ACCESS_TOKEN;
 
 function sendTextMessage(sender, text) {
     let messageData = { text:text }
