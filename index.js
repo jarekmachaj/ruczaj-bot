@@ -41,6 +41,7 @@ app.post('/webhook', function (req, res) {
         var event = req.body.entry[0].messaging[i]
         if (event.sender.id == process.env.RUCZAJ_PROFILE_ID) continue;            
         var sender = event.sender.id;
+        console.log('sender: ' + event.sender.id);
         if (event.message && event.message.text) {
             var text = event.message.text
             sendTextMessage(sender, tempMessage /*"Text received, echo: " + text.substring(0, 200)*/)
