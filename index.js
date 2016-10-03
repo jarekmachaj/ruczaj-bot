@@ -40,6 +40,7 @@ app.post('/webhook', function (req, res) {
     console.log(messaging_events);
     for (var i = 0; i < messaging_events.length; i++) {
         var event = req.body.entry[0].messaging[i]
+        if (event.sender.id == 278725065568764) continue;            
         var sender = event.sender.id;
         console.log(event);
         if (event.message && event.message.text) {
