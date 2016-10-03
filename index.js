@@ -26,7 +26,7 @@ app.get('/webhook', function (req, res) {
     }
 });
 
-app.post('/webhook/', function (req, res) {
+app.post('/webhook', function (req, res) {
     let messaging_events = req.body.entry[0].messaging
     for (let i = 0; i < messaging_events.length; i++) {
         let event = req.body.entry[0].messaging[i]
@@ -39,7 +39,7 @@ app.post('/webhook/', function (req, res) {
     res.sendStatus(200)
 })
 
-var token = 'xyz'; //process.env.RUCZAJ_ACCESS_TOKEN;
+var token =  process.env.RUCZAJ_ACCESS_TOKEN;
 
 function sendTextMessage(sender, text) {
     let messageData = { text:text }
