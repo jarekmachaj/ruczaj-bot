@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
 var synRequest = require('sync-request');
+var os = require("os");
 
 var app = express();
 
@@ -31,7 +32,7 @@ app.get('/webhook', function (req, res) {
     }
 });
 
-var tempMessage = "Cześć, gdy tylko odbierzemy wiadomość na pewno do Ciebie odpiszemy. Jeśli to coś pilnego, proszę wyślij nam e-mail na adres: ruczajkrk@gmail.com";
+var tempMessage = "Gdy tylko odbierzemy wiadomość na pewno do Ciebie odpiszemy. Jeśli to coś pilnego, proszę wyślij nam e-mail na adres: ruczajkrk@gmail.com";
 
 
 app.post('/webhook', function (req, res) {
@@ -57,7 +58,7 @@ function getUserDetails(senderid) {
 
 function sendTextMessage(sender, text) {
     var user = getUserDetails(sender);
-    var msg = 'Cześć ' + user.first_name + '/n' + text; 
+    var msg = 'Cześć ' + user.first_name + os.EOL + text; 
     var messageData = { text:msg }
     
     request({
