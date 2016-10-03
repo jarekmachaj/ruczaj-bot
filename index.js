@@ -1,6 +1,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
+var synRequest = require('sync-request');
+
 var app = express();
 
 app.use(bodyParser.urlencoded({extended: false}));
@@ -29,7 +31,7 @@ app.get('/webhook', function (req, res) {
     }
 });
 
-var tempMessage = "Cześć, jak tylko odbierzemy wiadomość na pewno do Ciebie odpiszemy. Jeśli to coś pilnego, proszę wyślij nam e-mail na adres: ruczajkrk@gmail.com";
+var tempMessage = "Cześć, gdy tylko odbierzemy wiadomość na pewno do Ciebie odpiszemy. Jeśli to coś pilnego, proszę wyślij nam e-mail na adres: ruczajkrk@gmail.com";
 
 
 app.post('/webhook', function (req, res) {
@@ -47,8 +49,17 @@ app.post('/webhook', function (req, res) {
 
 var token =  process.env.RUCZAJ_ACCESS_TOKEN;
 
+function getUserDetails(senderid){
+    var res = synRequest('POST', 'https://graph.facebook.com/v2.6/' + senderid + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token);
+    var user = JSON.parse(res.getBody('utf8'));
+    return user;
+}
+
 function sendTextMessage(sender, text) {
-    var messageData = { text:text }
+    var user = getUserDetails(sender);
+    var msg = 'Cześć ' + user.first_name + '/n' + text; 
+    var messageData = { text:msg }
+    
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {access_token:token},
