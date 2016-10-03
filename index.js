@@ -9,6 +9,7 @@ app.use(bodyParser.json());
 
 var server_port = process.env.YOUR_PORT || process.env.PORT || 80;
 var server_host = process.env.YOUR_HOST || '0.0.0.0';
+
 app.listen(server_port, server_host, function() {
     console.log('Listening on port %d', server_port);
 });
@@ -28,6 +29,8 @@ app.get('/webhook', function (req, res) {
     }
 });
 
+
+/*
 app.post('/webhook', function (req, res) {
     let messaging_events = req.body.entry[0].messaging
     for (let i = 0; i < messaging_events.length; i++) {
@@ -61,3 +64,4 @@ function sendTextMessage(sender, text) {
         }
     })
 };
+*/
