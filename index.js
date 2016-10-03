@@ -55,7 +55,7 @@ var token =  process.env.RUCZAJ_ACCESS_TOKEN;
 function getUserDetails(senderid) {
     console.log('getUserDetails, senderId: ' + senderid);    
     var res = synRequest('GET', 'https://graph.facebook.com/v2.6/' + senderid + '?fields=first_name&access_token=' + token);
-    var user = JSON.parse(res.getBody('utf8'))o;
+    var user = JSON.parse(res.getBody('utf8'));
     console.log('getUserDetails, user: ' + user);
     return user;
 }
