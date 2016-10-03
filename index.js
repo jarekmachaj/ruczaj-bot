@@ -29,6 +29,7 @@ app.get('/webhook', function (req, res) {
     }
 });
 
+var tempMessage = "Cześć, jak tylko odbierzemy wiadomość na pewno do Ciebie odpiszemy. Jeśli to coś pilnego, proszę wyślij nam e-mail na adres: ruczajkrk@gmail.com";
 
 
 app.post('/webhook', function (req, res) {
@@ -38,7 +39,7 @@ app.post('/webhook', function (req, res) {
         var sender = event.sender.id
         if (event.message && event.message.text) {
             var text = event.message.text
-            sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+            sendTextMessage(sender, tempMessage /*"Text received, echo: " + text.substring(0, 200)*/)
         }
     }
     res.sendStatus(200)
