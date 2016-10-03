@@ -58,7 +58,14 @@ function getUserDetails(senderid) {
 
 function sendTextMessage(sender, text) {
     var user = getUserDetails(sender);
-    var msg = 'Cześć ' + user.first_name + os.EOL + text; 
+    var msg = 'Cześć ';
+    if (user != null && user != undefined && user.first_name != null && user.first_name != undefined){
+        msg = msg + user.first_name + os.EOL + text;
+    } else {
+        msg = msg + os.EOL + text;
+    }
+    
+
     var messageData = { text:msg }
     
     request({
