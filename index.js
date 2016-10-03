@@ -50,15 +50,18 @@ app.post('/webhook', function (req, res) {
 
 var token =  process.env.RUCZAJ_ACCESS_TOKEN;
 
-function getUserDetails(senderid) {    
+function getUserDetails(senderid) {
+    console.log('getUserDetails, senderId: ' + senderid);    
     var res = synRequest('GET', 'https://graph.facebook.com/v2.6/' + senderid + '?fields=first_name&access_token=' + token);
     var user = JSON.parse(res.getBody('utf8'));
-    console.log(user);
+    console.log('getUserDetails, user: ' + user);
     return user;
 }
 
 function sendTextMessage(sender, text) {
+    console.log('sendTextMessage, sender: ' + sender);
     var user = getUserDetails(sender);
+    console.log('sendTextMessage, user: ' + user);
     var msg = 'Cześć ';
     if (user != null && user != undefined && user.first_name != null && user.first_name != undefined){
         msg = msg + user.first_name + os.EOL + text;
