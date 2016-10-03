@@ -32,17 +32,15 @@ app.get('/webhook', function (req, res) {
     }
 });
 
-var tempMessage = "Gdy tylko odbierzemy wiadomość na pewno do Ciebie odpiszemy. Jeśli to coś pilnego, proszę wyślij nam e-mail na adres: ruczajkrk@gmail.com";
+var tempMessage = "Gdy tylko odbierzemy wiadomość na pewno do Ciebie odpiszemy" + os.EOL + "Jeśli to coś pilnego, proszę wyślij nam e-mail na adres: ruczajkrk@gmail.com";
 
 
 app.post('/webhook', function (req, res) {
-    var messaging_events = req.body.entry[0].messaging
-    console.log(messaging_events);
+    var messaging_events = req.body.entry[0].messaging;
     for (var i = 0; i < messaging_events.length; i++) {
         var event = req.body.entry[0].messaging[i]
-        if (event.sender.id == 278725065568764) continue;            
+        if (event.sender.id == process.env.RUCZAJ_PROFILE_ID) continue;            
         var sender = event.sender.id;
-        console.log(event);
         if (event.message && event.message.text) {
             var text = event.message.text
             sendTextMessage(sender, tempMessage /*"Text received, echo: " + text.substring(0, 200)*/)
@@ -54,17 +52,13 @@ app.post('/webhook', function (req, res) {
 var token =  process.env.RUCZAJ_ACCESS_TOKEN;
 
 function getUserDetails(senderid) {
-    console.log('getUserDetails, senderId: ' + senderid);    
     var res = synRequest('GET', 'https://graph.facebook.com/v2.6/' + senderid + '?fields=first_name&access_token=' + token);
     var user = JSON.parse(res.getBody('utf8'));
-    console.log('getUserDetails, user: ' + user);
     return user;
 }
 
 function sendTextMessage(sender, text) {
-    console.log('sendTextMessage, sender: ' + sender);
     var user = getUserDetails(sender);
-    console.log('sendTextMessage, user: ' + user);
     var msg = 'Cześć ';
     if (user != null && user != undefined && user.first_name != null && user.first_name != undefined){
         msg = msg + user.first_name + os.EOL + text;
