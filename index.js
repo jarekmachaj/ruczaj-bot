@@ -37,9 +37,11 @@ var tempMessage = "Gdy tylko odbierzemy wiadomość na pewno do Ciebie odpiszemy
 
 app.post('/webhook', function (req, res) {
     var messaging_events = req.body.entry[0].messaging
+    console.log(messaging_events);
     for (var i = 0; i < messaging_events.length; i++) {
         var event = req.body.entry[0].messaging[i]
-        var sender = event.sender.id
+        var sender = event.sender.id;
+        console.log(event);
         if (event.message && event.message.text) {
             var text = event.message.text
             sendTextMessage(sender, tempMessage /*"Text received, echo: " + text.substring(0, 200)*/)
@@ -53,7 +55,7 @@ var token =  process.env.RUCZAJ_ACCESS_TOKEN;
 function getUserDetails(senderid) {
     console.log('getUserDetails, senderId: ' + senderid);    
     var res = synRequest('GET', 'https://graph.facebook.com/v2.6/' + senderid + '?fields=first_name&access_token=' + token);
-    var user = JSON.parse(res.getBody('utf8'));
+    var user = JSON.parse(res.getBody('utf8'))o;
     console.log('getUserDetails, user: ' + user);
     return user;
 }
