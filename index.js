@@ -3,22 +3,20 @@ var bodyParser = require('body-parser');
 var request = require('request');
 var synRequest = require('sync-request');
 var os = require("os");
+var logger = require('./logging.js');
 
 var app = express();
-
-var test = "";
-
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 
-var server_port = process.env.YOUR_PORT || process.env.PORT || 80;
-var server_host = process.env.YOUR_HOST || '0.0.0.0';
-
+var server_port = 1337; //process.env.YOUR_PORT || process.env.PORT || 80;
+var server_host = "localhost"; //process.env.YOUR_HOST || '0.0.0.0';
 app.listen(server_port, server_host, function() {
     console.log('Listening on port %d', server_port);
 });
 
+logger.settings.logging = true;
 
 // Server frontpage
 app.get('/', function (req, res) {
