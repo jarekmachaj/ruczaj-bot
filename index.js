@@ -17,8 +17,6 @@ app.listen(server_port, server_host, function() {
     console.log('Listening on port %d', server_port);
 });
 
-
-
 // Server frontpage
 app.get('/', function (req, res) {
     res.send('This is Ruczaj-bot Server - beta');
