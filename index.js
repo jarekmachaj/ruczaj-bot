@@ -6,6 +6,8 @@ var os = require("os");
 
 var app = express();
 
+var test = "";
+
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
