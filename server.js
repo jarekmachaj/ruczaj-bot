@@ -24,6 +24,7 @@ http.createServer(function (request, response) {
             response.end();
             break;
         case '/webhook' :
+            console.log(request);
             bot.fbWebhook(request, response);
             break;
         default:
