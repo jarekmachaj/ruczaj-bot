@@ -76,10 +76,15 @@ msgBot.prototype.setDefaultAction = function (action) {
     this._defaultAction = action;
 }
 
+
 //adds user acees (date) + returns last access
-msgBot.prototype.userAccess = function(userId){
+msgBot.prototype.setUserAccess = function(userId){
+     this._lastUserMessage[userId] = new Date();
+}
+
+//adds user acees (date) + returns last access
+msgBot.prototype.getUserAccess = function(userId){
     var lastAccess = this._lastUserMessage[userId];
-    this._lastUserMessage[userId] = new Date();
     return lastAccess;
 }
 
@@ -89,33 +94,31 @@ msgBot.prototype.setWelcomeAction = function(action, timeout) {
     this._welcomeTimeout = timeout;
 }
 
-msgBot.prototype.takeWelcomeAction = function(params) {    
-    logger.log('taking welcome action');
-    logger.log('Welcome timout: ' + this._welcomeTimeout);
-    var diff = dateDiff(new Date(), this.userAccess(params.sender)).minutes;
-    if (diff < 0 || diff > this._welcomeTimeout){
-            logger.log('timeout + ok, searching welcome action');
-            if (this._welcomeAction != undefined){
-                logger.log('taking welcome action');
-                this._welcomeAction(params);
-                return true;
-            }
-    }
-} 
-
 //action here is a text message from user - determining next steps
-msgBot.prototype.takeAction = function(action, params){    
+msgBot.prototype.takeAction = function(action, params){  
+    var selectedAction = this._defaultAction;   
     var userId = params.sender;    
     logger.log('taking action (takeAction), userid:' + userId);
-    if (this.takeWelcomeAction(params) == true) return;    
-    var selectedAction = this._defaultAction;    
-    for (var i = 0; i < this._actions.length; i++){
-        if (action.indexOf(this._actions[i]) >= 0) {
-            selectedAction = this._actions[i];
-            break;
-        }
+    var diff = dateDiff(new Date(), this.getUserAccess(params.sender)).minutes;
+    logger.log('diff last access (mins): ' + diff);
+    logger.log('Welcome timout: ' + this._welcomeTimeout); 
+    if (diff < 0 || diff > this._welcomeTimeout) {
+            logger.log('taking welcome action');                 
+            selectedAction = this._welcomeAction;
+            logger.log('timeout + ok, searching welcome action');            
+    } else {
+        for (var i = 0; i < this._actions.length; i++){
+            if (action.indexOf(this._actions[i]) >= 0) {
+                selectedAction = this._actions[i];
+                break;
+            }
+        }    
     }    
-    if (selectedAction != undefined && selectedAction != null) selectedAction(params);            
+    if (selectedAction != undefined && selectedAction != null) {
+        selectedAction(params);
+        this.setUserAccess(params.sender);
+    }       
+
 }
 
 msgBot.prototype.sendTextMessage = function(msg, params){
