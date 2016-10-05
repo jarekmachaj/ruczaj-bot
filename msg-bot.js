@@ -35,7 +35,7 @@ msgBot.prototype.logEnabled = function(enabled){
 //https://graph.facebook.com/v2.6/me/messages?access_token=PAGE_ACCESS_TOKEN
 //https://graph.facebook.com/v2.6/[senderid]/?fields=first_name&access_token=[token]'
 msgBot.prototype.buildGraphUrl = function(params, queryParams){
-    var query = this._fbProtocol + '/' + this._fbHost + '/' + this._fbApiVersion;
+    var query = this._fbProtocol + this._fbHost + '/' + this._fbApiVersion;
     if (params != null && params != undefined && params.length > 0) query = query + '/' + params.join('/');
     if (queryParams != null && queryParams != undefined) query = query + '?' + querystring.stringify(queryParams);  
     return query;  
