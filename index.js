@@ -17,7 +17,7 @@ var bot = new fbMsgBot(process.env.RUCZAJ_ACCESS_TOKEN, 278725065568764, 'ruczaj
 bot.setWelcomeAction(function(params){
     var senderid = params.sender;
     var userDetails = bot.getUserDetails(params.sender);    
-    bot.sendTextMessage('Cześć ' + userDetails.first_name + os.EOL + 'Gdy tylko odbierzemy wiadomość na pewno do Ciebie odpiszemy.' + os.EOL + 'Jeśli to coś pilnego, proszę wyślij nam e-mail na adres: ruczajkrk@gmail.com');
+    bot.sendTextMessage('Cześć ' + userDetails.first_name + os.EOL + 'Gdy tylko odbierzemy wiadomość na pewno do Ciebie odpiszemy.' + os.EOL + 'Jeśli to coś pilnego, proszę wyślij nam e-mail na adres: ruczajkrk@gmail.com', params);
 }, 2);
 
 
