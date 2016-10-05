@@ -86,20 +86,19 @@ msgBot.prototype.userAccess = function(userId){
 //welcome action fires up, after first message from contact (timeout needed) 
 msgBot.prototype.setWelcomeAction = function(action, timeout) {
     this._welcomeAction = action;
+    this._welcomeTimeout = timeout;
 }
 
-msgBot.prototype.takeWelcomeAction = function(userid) {
-    
-    if (dateDiff(new Date(), this.userAccess(userid)).minutes > this._welcomeTimeout){
+msgBot.prototype.takeWelcomeAction = function(params) {    
+    if (dateDiff(new Date(), this.userAccess(params.sender)).minutes > this._welcomeTimeout){
             if (this._welcomeAction != undefined){
-                this._welcomeAction(userId)
+                this._welcomeAction(params);
             }
     }
 } 
 
 //action here is a text message from user - determining next steps
-msgBot.prototype.takeAction = function(action, params){
-    
+msgBot.prototype.takeAction = function(action, params){    
     var userId = params.sender;    
     if (this.takeWelcomeAction(params) == true) return;    
     var selectedAction = this._defaultAction;    
