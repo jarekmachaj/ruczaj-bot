@@ -1,11 +1,11 @@
-var exports = module.exports = {};
+function logger(){}
 
-var settings = {
+logger.prototype.settings = {
     logging: false
 }
 
-function log(msg, logType){
-    if (settings.logging == false) return;
+logger.prototype.log = function(msg, logType){
+    if (this.settings.logging == false) return;
 
     switch (logType) {
         case "INFO" : console.log(msg);
@@ -13,7 +13,6 @@ function log(msg, logType){
     }
 }
 
-console.log('Logger starts');
+var instance  = new logger();
 
-exports.settings = settings;
-exports.log = log;
+module.exports = instance;

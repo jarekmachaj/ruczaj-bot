@@ -3,8 +3,6 @@ var request = require('request'); //from npm
 var querystring = require('querystring'); //from npm
 var logger = require('./logging.js');
 
-logger.settings.logging = true;
-
 var msgBot = function(appAccessToken, pageProfileId, verifyTokenName){
     
     logger.log('msgBot contructor');
@@ -24,12 +22,6 @@ var msgBot = function(appAccessToken, pageProfileId, verifyTokenName){
     //userid : datetime
     this._lastUserMessage = {}; //message
 }
-
-
-msgBot.prototype.logEnabled = function(enabled){
-    logger.settings.logging = enabled;
-}
-
 
 //ie: buildGraphUrl([12435436] - array, {fields : 'first_name,secondName''})
 //https://graph.facebook.com/v2.6/me/messages?access_token=PAGE_ACCESS_TOKEN
