@@ -152,6 +152,9 @@ function dateDiff(dateFrom, dateTo){
         var dif = dateFrom.getTime() - dateTo.getTime();
         seconds = Math.abs(dif / 1000);        
     }
+
+    logger.log('datediff, seconds: ' + seconds);
+
     return {
         seconds : seconds,
         minutes :  seconds / 60,
