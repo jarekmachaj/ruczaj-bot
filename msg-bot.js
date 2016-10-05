@@ -92,7 +92,8 @@ msgBot.prototype.setWelcomeAction = function(action, timeout) {
 msgBot.prototype.takeWelcomeAction = function(params) {    
     logger.log('taking welcome action');
     logger.log('Welcome timout: ' + this._welcomeTimeout);
-    if (dateDiff(new Date(), this.userAccess(params.sender)).minutes > this._welcomeTimeout){
+    var diff = dateDiff(new Date(), this.userAccess(params.sender)).minutes;
+    if (diff < 0 || diff > this._welcomeTimeout){
             logger.log('timeout + ok, searching welcome action');
             if (this._welcomeAction != undefined){
                 logger.log('taking welcome action');
