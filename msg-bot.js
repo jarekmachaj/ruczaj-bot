@@ -22,8 +22,9 @@ var msgBot = function(appAccessToken, pageProfileId, verifyTokenName){
     this,_welcomeTimeout = 0;
     this._reservedActionNames = ['default', 'error', 'welcome'];
     //userid : datetime
-    this._lastUserMessage = {};
+    this._lastUserMessage = {}; //message
 }
+
 
 msgBot.prototype.logEnabled = function(enabled){
     logger.settings.logging = enabled;
@@ -126,9 +127,9 @@ msgBot.prototype.sendTextMessage = function(msg, params){
     var messageData = { text:msg }
 
     logger.log('sending message: ' + msg + ' -----params : ' + params);
-
+    var that = this;
     request({
-        url: this.buildGraphUrl(['me', 'messages'], {'access_token' : this._appAccessToken}),
+        url: this.buildGraphUrl(['me', 'messages'], {'access_token' : that._appAccessToken}),
         method: 'POST',
         json: {
             recipient: {id: recipientid},
@@ -145,7 +146,7 @@ msgBot.prototype.sendTextMessage = function(msg, params){
 
 msgBot.prototype.getUserDetails = function(senderid) {
     logger.log('get user details: ' + senderid);
-    var url =  this.buildGraphUrl([senderid], {fields : 'first_name', access_token : this.appAccessToken});
+    var url =  this.buildGraphUrl([senderid], {fields : 'first_name', access_token : this._appAccessToken});
     logger.log('get user details, url: ' + url);
     var res = synRequest('GET', url);
     var user = JSON.parse(res.getBody('utf8'));
