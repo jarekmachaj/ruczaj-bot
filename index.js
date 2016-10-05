@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 
 var server_port = process.env.YOUR_PORT || process.env.PORT || 80;
 var server_host = process.env.YOUR_HOST || '0.0.0.0';
-var bot = new fbMsgBot(process.env.RUCZAJ_ACCESS_TOKEN, 278725065568764, 'ruczaj_verify_token');
+var bot = new fbMsgBot(process.env.RUCZAJ_ACCESS_TOKEN, process.env.RUCZAJ_PROFILE_ID, process.env.TOKEN_VERIFICATION_NAME);
 bot.setWelcomeAction(function(params){
     var senderid = params.sender;
     var userDetails = bot.getUserDetails(params.sender);    
