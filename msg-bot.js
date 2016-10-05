@@ -144,7 +144,7 @@ msgBot.prototype.sendTextMessage = function(msg, params){
 }
 
 msgBot.prototype.getUserDetails = function(senderid) {
-    var res = synRequest('GET', this.buildGraphUrl(senderid, {fields : 'first_name', access_token : this.appAccessToken}));
+    var res = synRequest('GET', this.buildGraphUrl([senderid], {fields : 'first_name', access_token : this.appAccessToken}));
     var user = JSON.parse(res.getBody('utf8'));
     return user;
 }
