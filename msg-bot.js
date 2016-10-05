@@ -70,6 +70,10 @@ msgBot.prototype.setDefaultAction = function (action) {
     this._defaultAction = action;
 }
 
+msgBot.takeWelcomeAction = function(){
+
+} 
+
 //action here is a text message from user - determining next steps
 msgBot.prototype.takeAction = function(action, params){
     if (this._welcomeAction != undefined) this._welcomeAction(params);

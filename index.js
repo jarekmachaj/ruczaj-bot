@@ -9,9 +9,9 @@ logger.settings.logging = true;
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-var server_port = 1337; //process.env.YOUR_PORT || process.env.PORT || 80;
-var server_host = "localhost"; //process.env.YOUR_HOST || '0.0.0.0';
-var bot = new fbMsgBot(12345 /*process.env.RUCZAJ_ACCESS_TOKEN*/, 278725065568764, 'ruczaj_verify_token');
+var server_port = process.env.YOUR_PORT || process.env.PORT || 80;
+var server_host = process.env.YOUR_HOST || '0.0.0.0';
+var bot = new fbMsgBot(process.env.RUCZAJ_ACCESS_TOKEN, 278725065568764, 'ruczaj_verify_token');
 
 app.listen(server_port, server_host, function() {
     console.log('Listening on port %d', server_port);
