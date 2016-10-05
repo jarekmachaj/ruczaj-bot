@@ -1,7 +1,9 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var os = require("os");
 var logger = require('./logging.js');
 var fbMsgBot = require('./msg-bot.js');
+
 
 var app = express();
 logger.settings.logging = true;
@@ -12,6 +14,12 @@ app.use(bodyParser.json());
 var server_port = process.env.YOUR_PORT || process.env.PORT || 80;
 var server_host = process.env.YOUR_HOST || '0.0.0.0';
 var bot = new fbMsgBot(process.env.RUCZAJ_ACCESS_TOKEN, 278725065568764, 'ruczaj_verify_token');
+bot.setWelcomeAction(function(params){
+    var senderid = params.sender;
+    var userDetails = bot.getUserDetails(params.sender);    
+    bot.sendTextMessage('Cześć ' + userDetails.first_name + os.EOL + 'Gdy tylko odbierzemy wiadomość na pewno do Ciebie odpiszemy.' + os.EOL + 'Jeśli to coś pilnego, proszę wyślij nam e-mail na adres: ruczajkrk@gmail.com');
+}, 2);
+
 
 app.listen(server_port, server_host, function() {
     console.log('Listening on port %d', server_port);

@@ -19,7 +19,14 @@ var msgBot = function(appAccessToken, pageProfileId, verifyTokenName){
     this._actions = [];
     this._defaultAction = function() { console.log('Set the default action...'); };
     this._welcomeAction = undefined;
-    this._reservedActionNames = ['default', 'error'];
+    this,_welcomeTimeout = 0;
+    this._reservedActionNames = ['default', 'error', 'welcome'];
+    //userid : datetime
+    this._lastUserMessage = {};
+}
+
+msgBot.prototype.logEnabled = function(enabled){
+    logger.settings.logging = enabled;
 }
 
 
@@ -45,8 +52,7 @@ msgBot.prototype.fbWebhook = function(req, res) {
     } else {
         var messaging_events = req.body.entry[0].messaging;
         for (var i = 0; i < messaging_events.length; i++) {
-            var event = req.body.entry[0].messaging[i];
-            
+            var event = req.body.entry[0].messaging[i];            
             if (this._pageProfileId != undefined && event.sender.id == this._pageProfileId) continue;            
             
             var sender = event.sender.id;        
@@ -70,13 +76,32 @@ msgBot.prototype.setDefaultAction = function (action) {
     this._defaultAction = action;
 }
 
-msgBot.takeWelcomeAction = function(){
+//adds user acees (date) + returns last access
+msgBot.prototype.userAccess = function(userId){
+    var lastAccess = this._lastUserMessage[userId];
+    this._lastUserMessage[userId] = new Date();
+    return lastAccess;
+}
 
+//welcome action fires up, after first message from contact (timeout needed) 
+msgBot.prototype.setWelcomeAction = function(action, timeout) {
+    this._welcomeAction = action;
+}
+
+msgBot.prototype.takeWelcomeAction = function(userid) {
+    
+    if (dateDiff(new Date(), this.userAccess(userid)).minutes > this._welcomeTimeout){
+            if (this._welcomeAction != undefined){
+                this._welcomeAction(userId)
+            }
+    }
 } 
 
 //action here is a text message from user - determining next steps
 msgBot.prototype.takeAction = function(action, params){
-    if (this._welcomeAction != undefined) this._welcomeAction(params);
+    
+    var userId = params.sender;    
+    if (this.takeWelcomeAction(params) == true) return;    
     var selectedAction = this._defaultAction;    
     for (var i = 0; i < this._actions.length; i++){
         if (action.indexOf(this._actions[i]) >= 0) {
@@ -84,7 +109,7 @@ msgBot.prototype.takeAction = function(action, params){
             break;
         }
     }    
-    if (selectedAction != undefined && selectedAction != null) selectedAction();            
+    if (selectedAction != undefined && selectedAction != null) selectedAction(params);            
 }
 
 msgBot.prototype.sendTextMessage = function(msg, recipientid){
@@ -110,6 +135,21 @@ msgBot.prototype.getUserDetails = function(senderid) {
     var res = synRequest('GET', this.buildGraphUrl(senderid, {fields : 'first_name', access_token : this.appAccessToken}));
     var user = JSON.parse(res.getBody('utf8'));
     return user;
+}
+
+//utils - to different module
+function dateDiff(dateFrom, dateTo){
+    var seconds = -1;
+    if (dateFrom != undefined && dateTo != undefined){
+        var dif = dateFrom.getTime() - dateTo.getTime();
+        seconds = Math.abs(dif / 1000);        
+    }
+    return {
+        seconds : seconds,
+        minutes :  seconds / 60,
+        hours : seconds / 3600,
+        days : seconds / (3600 * 24)
+    }
 }
 
 
