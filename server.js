@@ -31,7 +31,4 @@ http.createServer(function (request, response) {
             response.write('This is Ruczaj-bot Server - beta');
             response.end();
     }
-}).listen(8081);
-
-// Console will print the message
-console.log('Server running at http://127.0.0.1:8081/');
+}).listen(server_port);
