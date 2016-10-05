@@ -36,7 +36,7 @@ msgBot.prototype.logEnabled = function(enabled){
 msgBot.prototype.buildGraphUrl = function(params, queryParams){
     var query = this._fbProtocol + '/' + this._fbHost + '/' + this._fbApiVersion;
     if (params != null && params != undefined && params.length > 0) query = query + '/' + params.join('/');
-    if (queryParams != null && queryParams != undefined) query = query + '?' + querystring.strigify(queryParams);  
+    if (queryParams != null && queryParams != undefined) query = query + '?' + querystring.stringify(queryParams);  
     return query;  
 }
 
