@@ -148,6 +148,8 @@ msgBot.prototype.getUserDetails = function(senderid) {
 
 //utils - to different module
 function dateDiff(dateFrom, dateTo){
+    logger.log('dateDiff, dateFrom,: ' + dateFrom);
+    logger.log('dateDiff, dateTo,: ' + dateTo);
     var seconds = -1;
     if (dateFrom != undefined && dateTo != undefined){
         var dif = dateFrom.getTime() - dateTo.getTime();
