@@ -1,6 +1,7 @@
 var http = require('http');
 var url = require('url');
 var os = require("os");
+var CircularJSON = require('circular-json');    
 var logger = require('./logging.js');
 var fbMsgBot = require('./msg-bot.js');
 
@@ -16,6 +17,9 @@ bot.setWelcomeAction(function(params){
 }, 2);
 
 http.createServer(function (request, response) {
+
+    console.log(request);
+
     var pathName = url.parse(request.url).pathname;
     switch (pathName){
         case '/' :
