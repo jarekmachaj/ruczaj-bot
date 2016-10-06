@@ -77,8 +77,7 @@ msgBot.prototype.setUserAccess = function(userId){
 
 //adds user acees (date) + returns last access
 msgBot.prototype.getUserAccess = function(userId){
-    var lastAccess = this._lastUserMessage[userId];
-    return lastAccess;
+    return this._lastUserMessage[userId];
 }
 
 //welcome action fires up, after first message from contact (timeout needed) 
