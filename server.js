@@ -18,8 +18,6 @@ bot.setWelcomeAction(function(params){
 
 http.createServer(function (request, response) {
 
-    console.log(request);
-
     var pathName = url.parse(request.url).pathname;
     switch (pathName){
         case '/' :
