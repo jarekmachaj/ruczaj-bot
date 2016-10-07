@@ -5,7 +5,7 @@ var bot = require('fbot');
 logger.settings.logging = true;
 
 bot.initialize(process.env.RUCZAJ_ACCESS_TOKEN, process.env.RUCZAJ_PROFILE_ID, process.env.TOKEN_VERIFICATION_NAME)
-bot.runServer('0.0.0.0', 80);
+bot.runServer('0.0.0.0', process.env.PORT);
 
 bot.setWelcomeAction(function(params){
     var senderid = params.sender;
