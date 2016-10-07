@@ -1,17 +1,12 @@
 var os = require("os");
 var logger = require('fast-logger');
-var fbMsgBot = require('./msg-bot.js');
+var bot = require('fbot');
 
-
-var app = express();
 logger.settings.logging = true;
 
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
+bot.initialize(process.env.RUCZAJ_ACCESS_TOKEN, process.env.RUCZAJ_PROFILE_ID, process.env.TOKEN_VERIFICATION_NAME)
+bot.runServer('0.0.0.0', 80);
 
-var server_port = process.env.YOUR_PORT || process.env.PORT || 80;
-var server_host = process.env.YOUR_HOST || '0.0.0.0';
-var bot = new fbMsgBot(process.env.RUCZAJ_ACCESS_TOKEN, process.env.RUCZAJ_PROFILE_ID, process.env.TOKEN_VERIFICATION_NAME);
 bot.setWelcomeAction(function(params){
     var senderid = params.sender;
     var userDetails = bot.getUserDetails(params.sender);    
@@ -19,16 +14,3 @@ bot.setWelcomeAction(function(params){
 }, 2);
 
 
-app.listen(server_port, server_host, function() {
-    console.log('Listening on port %d', server_port);
-});
-
-// Server frontpage
-app.get('/', function (req, res) {
-    res.send('This is Ruczaj-bot Server - beta');
-});
-
-// Facebook Webhook
-app.all('/webhook', function (req, res) {
-    bot.fbWebhook(req, res);    
-});
