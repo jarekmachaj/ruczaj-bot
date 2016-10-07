@@ -19,6 +19,6 @@
   "homepage": "https://github.com/jarekmachaj/ruczaj-bot#readme",
   "dependencies": {  
     "fast-logger": "0.0.1",
-    "fbot": "^0.1.0"   
+    "fbot": "^0.1.2"   
   }
 }
