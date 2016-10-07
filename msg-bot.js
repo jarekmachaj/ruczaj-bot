@@ -1,10 +1,13 @@
+var express = require('express');
+var bodyParser = require('body-parser');
 var synRequest = require('sync-request'); //from npm
 var request = require('request'); //from npm
 var querystring = require('querystring'); //from npm
-var logger = require('./logging.js');
-
+var logger = require('fast-logger');
+var diff = require('datetime-diff');
+        
 var msgBot = function(appAccessToken, pageProfileId, verifyTokenName){
-    
+        
     logger.log('msgBot contructor');
     //if (appAccessToken == undefined || appAccessToken == null) throw 'Access token is missing';
 
@@ -21,6 +24,7 @@ var msgBot = function(appAccessToken, pageProfileId, verifyTokenName){
     this._reservedActionNames = ['default', 'error', 'welcome'];
     //userid : datetime
     this._lastUserMessage = {}; //message
+    this._app = express();
 }
 
 //ie: buildGraphUrl([12435436] - array, {fields : 'first_name,secondName''})
@@ -91,13 +95,13 @@ msgBot.prototype.takeAction = function(action, params){
     var selectedAction = this._defaultAction;   
     var userId = params.sender;    
     logger.log('taking action (takeAction), userid:' + userId);
-    var diff = dateDiff(new Date(), this.getUserAccess(params.sender)).minutes;
-    logger.log('diff last access (mins): ' + diff);
-    logger.log('Welcome timout: ' + this._welcomeTimeout); 
-    if (diff < 0 || diff > this._welcomeTimeout) {
+    var minutesdiff = diff(new Date(), this.getUserAccess(params.sender)).minutes;
+    logger.log('diff last access (mins):', minutesdiff);
+    logger.log('Welcome timout:', this._welcomeTimeout); 
+    if (minutesdiff < 0 || minutesdiff > this._welcomeTimeout) {
             logger.log('taking welcome action');                 
             selectedAction = this._welcomeAction;
-            logger.log('timeout + ok, searching welcome action');            
+            logger.log('timeout ok, searching welcome action');            
     } else {
         for (var i = 0; i < this._actions.length; i++){
             if (action.indexOf(this._actions[i]) >= 0) {
@@ -144,25 +148,6 @@ msgBot.prototype.getUserDetails = function(senderid) {
     return user;
 }
 
-//utils - to different module
-function dateDiff(dateFrom, dateTo){
-    logger.log('dateDiff, dateFrom,: ' + dateFrom);
-    logger.log('dateDiff, dateTo,: ' + dateTo);
-    var seconds = -1;
-    if (dateFrom != undefined && dateTo != undefined){
-        var dif = dateFrom.getTime() - dateTo.getTime();
-        seconds = Math.abs(dif / 1000);        
-    }
-
-    logger.log('datediff, seconds: ' + seconds);
-
-    return {
-        seconds : seconds,
-        minutes :  seconds / 60,
-        hours : seconds / 3600,
-        days : seconds / (3600 * 24)
-    }
-}
 
 
 module.exports = msgBot;

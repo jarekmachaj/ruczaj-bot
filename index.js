@@ -1,7 +1,5 @@
-var express = require('express');
-var bodyParser = require('body-parser');
 var os = require("os");
-var logger = require('./logging.js');
+var logger = require('fast-logger');
 var fbMsgBot = require('./msg-bot.js');
 
 
